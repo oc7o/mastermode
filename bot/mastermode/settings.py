@@ -1,7 +1,7 @@
 import os
 
 DEBUG = os.getenv("DEBUG", True)
-DISCORD_BOT_TOKEN = os.getenv("DEBUG", "TOKEN")
+DISCORD_BOT_TOKEN = os.getenv("DISCORD_BOT_TOKEN", "TOKEN")
 
 MODERATOR_ROLE_NAME = os.getenv("MODERATOR_ROLE_NAME", "Admin")
 
