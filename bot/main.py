@@ -3,7 +3,7 @@ import os
 from discord.ext import commands
 from mongoengine import *
 
-from bot.settings import *
+from mastermode.settings import *
 
 connect(
     MONGODB_DATABASE,
