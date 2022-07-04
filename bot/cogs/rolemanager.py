@@ -21,7 +21,7 @@ class Rolemanager(commands.Cog):
             role_obj = discord.utils.get(ctx.guild.roles, name=role)
             embed = discord.Embed(
                 title="Get Role",
-                description="On commenting this message with :white_check_mark: you get the role "
+                description="When commenting this message with :white_check_mark: you get the role "
                 + role_obj.mention,
             )
             message = await ctx.send(embed=embed)
