@@ -4,6 +4,7 @@ DEBUG = os.getenv("DEBUG", True)
 DISCORD_BOT_TOKEN = os.getenv("DISCORD_BOT_TOKEN", "TOKEN")
 
 MODERATOR_ROLE_NAME = os.getenv("MODERATOR_ROLE_NAME", "Admin")
+VC_CREATE_CHANNEL = "Speech-Beach🔊🏖"
 
 if DEBUG:
     print("Running in DEBUG mode...")
