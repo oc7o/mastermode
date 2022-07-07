@@ -29,7 +29,7 @@ class VCManagerController:
         )
 
         VCSession(
-            voice_channel=voice_channel, text_channel=text_channel, creator=creator
+            voicechannel=voice_channel, textchannel=text_channel, creator=creator
         ).save()
         return voice_channel
 

@@ -35,9 +35,9 @@ class Rolemanager(commands.Cog):
     async def on_reaction_add(self, reaction, user):
         rm = RoleManagerController()
         messages = rm.fetch_messages()
-        if reaction.message.id in messages.keys():
+        if messages.filter(message_id=reaction.message.id).exists():
             if reaction.emoji == "✅":
-                role_id = messages[reaction.message.id].role_id
+                role_id = messages.objects.get(message_id=reaction.message.id).role_id
                 role_obj = discord.utils.get(user.guild.roles, id=role_id)
                 await user.add_roles(role_obj)
 
@@ -45,9 +45,9 @@ class Rolemanager(commands.Cog):
     async def on_reaction_remove(self, reaction, user):
         rm = RoleManagerController()
         messages = rm.fetch_messages()
-        if reaction.message.id in messages.keys():
+        if messages.filter(message_id=reaction.message.id).exists():
             if reaction.emoji == "✅":
-                role_id = messages[reaction.message.id].role_id
+                role_id = messages.objects.get(message_id=reaction.message.id).role_id
                 role_obj = discord.utils.get(user.guild.roles, id=role_id)
                 await user.remove_roles(role_obj)
 
