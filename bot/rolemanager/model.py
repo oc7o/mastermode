@@ -1,4 +1,6 @@
-class RoleManagerMessage:
-    def __init__(self, message_id, role_id):
-        self.message_id = message_id
-        self.role_id = role_id
+from mongoengine import *
+
+
+class RoleManagerMessage(Document):
+    message_id = IntField()
+    role_id = IntField()

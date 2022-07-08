@@ -3,15 +3,13 @@ import discord
 from .model import VCSession
 from mastermode.settings import VC_CREATE_CHANNEL
 
-sessions = {}
-
 
 class VCManagerController:
     def __init__(self):
         pass
 
     async def fetch_sessions(self):
-        return sessions
+        return VCSession.objects.all()
 
     async def start_session(self, guild, creator):
         text_channel_name = (creator.name + "s-session").lower()
@@ -30,18 +28,19 @@ class VCManagerController:
             creator, view_channel=True, send_messages=True
         )
 
-        vs = VCSession(voice_channel, text_channel, creator)
-        sessions[str(voice_channel.id)] = vs
+        VCSession(
+            voicechannel=voice_channel.id,
+            textchannel=text_channel.id,
+            creator=creator.id,
+        ).save()
         return voice_channel
 
     async def update_session_permissions(self, channel, user):
-        vs = sessions[str(channel.id)]
-        text_channel = vs.textchannel
+        text_channel = VCSession.objects.get(voicechannel=str(channel.id))
         await text_channel.set_permissions(user, view_channel=True, send_messages=True)
 
     async def downdate_session_permissions(self, channel, user):
-        vs = sessions[str(channel.id)]
-        text_channel = vs.textchannel
+        text_channel = VCSession.objects.get(voicechannel=str(channel.id))
         await text_channel.set_permissions(
             user, view_channel=False, send_messages=False
         )
@@ -50,12 +49,14 @@ class VCManagerController:
         pass
 
     async def delete_session(self, channel):
-        vs = sessions[str(channel.id)]
-        voice_channel = vs.voicechannel
-        text_channel = vs.textchannel
-        await voice_channel.delete()
-        await text_channel.delete()
-        sessions.pop(str(channel.id))
+        vs = VCSession.objects.get(voicechannel=str(channel.id))
+        await discord.utils.get(channel.guild.channels, id=vs.textchannel).delete()
+        await discord.utils.get(channel.guild.channels, id=vs.voicechannel).delete()
+        # voice_channel = vs.voicechannel
+        # text_channel = vs.textchannel
+        # await voice_channel.delete()
+        # await text_channel.delete()
+        vs.delete()
 
     def get_category_by_name(self, guild, category_name):
         category = None

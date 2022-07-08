@@ -1,9 +1,7 @@
-class VCSession:
-    voicechannel = None
-    textchannel = None
-    creator = None
+from mongoengine import *
 
-    def __init__(self, voicechannel, textchannel, creator):
-        self.voicechannel = voicechannel
-        self.textchannel = textchannel
-        self.creator = creator
+
+class VCSession(Document):
+    voicechannel = IntField()
+    textchannel = IntField()
+    creator = IntField()

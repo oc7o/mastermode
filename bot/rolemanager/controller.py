@@ -1,6 +1,6 @@
 from .model import RoleManagerMessage
 
-messages = {}
+# messages = {}
 
 
 class RoleManagerController:
@@ -8,10 +8,10 @@ class RoleManagerController:
         pass
 
     def add_message(self, message_id, role_id):
-        messages[message_id] = RoleManagerMessage(message_id, role_id)
+        RoleManagerMessage(message_id=message_id, role_id=role_id).save()
 
     def fetch_messages(self):
-        return messages
+        return RoleManagerMessage.objects.all()
 
     def remove_message(self, message_id):
-        del messages[message_id]
+        RoleManagerMessage.delete_many({"message_id": message_id})
