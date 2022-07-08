@@ -37,7 +37,7 @@ class VCCreator(commands.Cog):
                 channel = None
                 sessions = await vm.fetch_sessions()
                 for s in sessions:
-                    if sessions[s].creator.id == member.id:
+                    if s.creator == member.id:
                         creator = True
                         break
                 if creator is True:
@@ -48,7 +48,9 @@ class VCCreator(commands.Cog):
                         vm.get_channel_by_name(after.channel.guild, channel_name)
                     )
 
-            elif after.channel.id in [int(c) for c in await vm.fetch_sessions()]:
+            elif after.channel.id in [
+                c.voicechannel for c in await vm.fetch_sessions()
+            ]:
                 await vm.update_session_permissions(after.channel, member)
 
         if before.channel is not None:
@@ -59,7 +61,9 @@ class VCCreator(commands.Cog):
             ):
                 if len(before.channel.members) == 0:
                     await vm.delete_session(before.channel)
-            elif before.channel.id in [int(c) for c in await vm.fetch_sessions()]:
+            elif before.channel.id in [
+                c.voicechannel for c in await vm.fetch_sessions()
+            ]:
                 await vm.downdate_session_permissions(before.channel, member)
 
 

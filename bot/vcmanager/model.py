@@ -2,6 +2,6 @@ from mongoengine import *
 
 
 class VCSession(Document):
-    voicechannel = StringField()
-    textchannel = StringField()
+    voicechannel = IntField()
+    textchannel = IntField()
     creator = IntField()

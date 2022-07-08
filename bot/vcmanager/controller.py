@@ -29,16 +29,18 @@ class VCManagerController:
         )
 
         VCSession(
-            voicechannel=voice_channel, textchannel=text_channel, creator=creator
+            voicechannel=voice_channel.id,
+            textchannel=text_channel.id,
+            creator=creator.id,
         ).save()
         return voice_channel
 
     async def update_session_permissions(self, channel, user):
-        text_channel = VCSession.objects.get(id=str(channel.id))
+        text_channel = VCSession.objects.get(voicechannel=str(channel.id))
         await text_channel.set_permissions(user, view_channel=True, send_messages=True)
 
     async def downdate_session_permissions(self, channel, user):
-        text_channel = VCSession.objects.get(id=str(channel.id))
+        text_channel = VCSession.objects.get(voicechannel=str(channel.id))
         await text_channel.set_permissions(
             user, view_channel=False, send_messages=False
         )
@@ -47,11 +49,13 @@ class VCManagerController:
         pass
 
     async def delete_session(self, channel):
-        vs = VCSession.objects.get(id=str(channel.id))
-        voice_channel = vs.voicechannel
-        text_channel = vs.textchannel
-        await voice_channel.delete()
-        await text_channel.delete()
+        vs = VCSession.objects.get(voicechannel=str(channel.id))
+        await discord.utils.get(channel.guild.channels, id=vs.textchannel).delete()
+        await discord.utils.get(channel.guild.channels, id=vs.voicechannel).delete()
+        # voice_channel = vs.voicechannel
+        # text_channel = vs.textchannel
+        # await voice_channel.delete()
+        # await text_channel.delete()
         vs.delete()
 
     def get_category_by_name(self, guild, category_name):
