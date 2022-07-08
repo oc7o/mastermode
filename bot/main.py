@@ -6,12 +6,16 @@ from mongoengine import *
 from mastermode.settings import *
 
 connect(
-    MONGODB_DATABASE,
-    host=MONGODB_HOST,
-    username=MONGODB_USER,
-    password=MONGODB_PASSWORD,
-    authentication_source="admin",
+    host=f"mongodb://{MONGODB_USER}:{MONGODB_PASSWORD}@{MONGODB_HOST}/{MONGODB_DATABASE}?authSource=admin"
 )
+
+# connect(
+#     MONGODB_DATABASE,
+#     host=MONGODB_HOST,
+#     username=MONGODB_USER,
+#     password=MONGODB_PASSWORD,
+#     authentication_source="admin",
+# )
 
 bot = commands.Bot(command_prefix="$")
 for filename in os.listdir("./cogs"):
